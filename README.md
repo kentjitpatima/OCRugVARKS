@@ -1,11 +1,11 @@
 # OCRugVARKS
 
-OC R User Group 2019 Hackathon Repo
+# OC R User Group 2019 Hackathon Repo
+___
+## Team Members
 
-Team Members:
-
-Kent Jitpatima
-Vu Tran 
-Alex Ordonez
-Sunny Zhou
-Ryan Luu
+Kent Jitpatima <br>
+Vu Tran <br>
+Alex Ordonez <br>
+Sunny Zhou <br>
+Ryan Luu 
