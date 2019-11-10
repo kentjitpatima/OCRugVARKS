@@ -6,19 +6,44 @@ data <- read.csv("bank-full.csv", TRUE, ';')
 library(randomForest)
 library(caret)
 library(ggplot2)
+library(dplyr)
 
 #Visualize the Data
-#ggplot(data, aes(marital, y, size = balance, color = job)) + ?geom_point() + ?geom_smooth() + ?facet_gridt(drv ~ fl) + ?theme_minimal() + labs(title = "Title", subtitle = "subtitle" , x ="x axix" , y = "y axis")
+
+
+
+ggplot(data, aes(y, fill = y)) + geom_bar() +
+  labs(title = "Frequency of Clients Subscribing to a Term Deposit",
+       x = "Response",
+       y = "Frequency",
+       fill = "Did the client subscribe a term deposit?")
+
+ggplot(data, aes(job, fill = y)) + geom_bar() +
+  labs(title = "Frequency of Clients Subscribing to a Term Deposit by Jobs",
+       x = "Response",
+       y = "Frequency",
+       fill = "Did the client subscribe a term deposit?")
+
+
+ggplot(data, aes(job, fill = y)) + geom_bar(position = "fill") +
+  labs(title = "Frequency of Clients Subscribing to a Term Deposit by Ratio",
+       x = "Response",
+       y = "Frequency",
+       fill = "Did the client subscribe a term deposit?")
 
 #Remove unncessary columns
 data <- subset(data, select =-c(duration))
 
-#View the number of yes and no -> there is an inbalance of yes and no. Make sure test and train have good ratio of yes and no.
-table(data$y)
 
 #Create two new dataframe, data_yes has all of the obs with y=yes, data_no has all of the obs with y=no
 data_yes <- data[ which(data$y=='yes'),]
 data_no <- data[ which(data$y=='no'),]
+
+test_yes <- data[ which(data$y=='yes' & data$age >= 60),]
+test_no <- data[ which(data$y=='no'& data$age >=60),]
+
+mean(test_no$balance)
+mean(data$balance)
 
 #Partitioning the dataset
 set.seed(1234)
@@ -36,8 +61,37 @@ test <- rbind(test, test1)
 #Remove Variable
 rm(train1, test1)
 
+#End of Data Partition
 
-#randomForest Model
+summary(data_yes$job)
+summary(data$job)
+
+#admin 631/5171 said yes
+#blue collar 708/9732 said yes
+#entrepreneur 123/1487
+#housemaid 109/1240
+#management 1301/9458
+#retired 516/2264
+#self-employed 187/1579
+#services 369/4154
+#student 269/938
+#technician 840/7597
+#unemployed 202/1303
+#unknown 34/288
+
+
+#Random FOrest Model with Default Paraamters #not working as of now
+control <- trainControl(method="repeatedcv", number=10, repeats=3)
+seed <- 7
+metric <- "Accuracy"
+set.seed(seed)
+mtry <- sqrt(ncol(train))
+tunegrid <- expand.grid(.mtry=mtry)
+
+rf_default <- train(y~., data=data, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control)
+print(rf_default)
+
+#current rf
 rf <- randomForest(y~., data=train)
 
 #Prediction & Confusion Matrix - train data
@@ -50,11 +104,11 @@ p2 <- predict(rf, test)
 confusionMatrix(p2, test$y)
 
 
+varImpPlot(rf)
 
 
 
-
-
+##### trial #not working
 t <- tuneRF(train[,-17], train[,17],
             stepFactor = 0.5,
             plot = TRUE,
@@ -68,7 +122,3 @@ rf <- randomForest(y~., data = train,
                    importance = TRUE,
                    proximity = TRUE)
 
-
-#Variable Importance to see which variables play an important part in the model
-varImpPlot(rf)
-partialPlot(rf, train, job, "yes")
