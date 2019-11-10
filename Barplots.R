@@ -34,7 +34,7 @@ ggplot(data,aes(default, fill = y)) + geom_bar()
 #no significance
 
 #bargraph of balance vs Y ** use a different graph
-ggplot(data,aes(balance, fill = y)) + geom_bar() + xlim(-400,0) + ylim(0,500)
+ggplot(data,aes(balance, fill = y)) + geom_density() + xlim(-8000, 1428)
 
 #bargraph of housing vs Y
 ggplot(data, aes(housing, fill = y)) + geom_bar()
@@ -61,3 +61,8 @@ ggplot(data,aes(pdays, fill = y)) + geom_bar() + xlim(0,300)
 
 #bargraph of number of contacts vs Y
 ggplot(data,aes(previous, fill = y)) + geom_bar()
+
+summary(data$balance[which(data$y == 'yes' & data$age >=60)])
+summary(data$balance[which(data$y == 'yes' & data$age <=30)])
+
+summary(data$balance)
