@@ -1,0 +1,12 @@
+#Math Greeks + Ryan
+'''{r}
+data<-read.csv("bank-full",TRUE,';')
+
+#Packages
+library(caret)
+library(randomForest)
+library(ggplot2)
+
+#Remove unnecessary columns
+data<-subset(data,select = -c(duration))
+'''
