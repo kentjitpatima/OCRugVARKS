@@ -39,11 +39,45 @@ data <- subset(data, select =-c(duration))
 data_yes <- data[ which(data$y=='yes'),]
 data_no <- data[ which(data$y=='no'),]
 
-test_yes <- data[ which(data$y=='yes' & data$age >= 60),]
-test_no <- data[ which(data$y=='no'& data$age >=60),]
+#create 3 new dataframe divided by age group. 18-29, 30-59, and 60 and older.
+data_age1 <- data[which(data$age>=18 & data$age <30),]
+data_age2 <- data[which(data$age>=30 & data$age <60),]
+data_age3 <- data[which(data$age>60),]
 
-mean(test_no$balance)
-mean(data$balance)
+#Age Group 18-29
+ggplot(data_age1, aes(y, fill = y)) + geom_bar() +
+  labs(title = "Frequency of Clients Subscribing to a Term Deposit (18-29)",
+       x = "Response",
+       y = "Frequency",
+       fill = "Did the client subscribe a term deposit?")
+
+ggplot(data_age2, aes(y, fill = y)) + geom_bar() +
+  labs(title = "Frequency of Clients Subscribing to a Term Deposit (30-59)",
+       x = "Response",
+       y = "Frequency",
+       fill = "Did the client subscribe a term deposit?")
+
+ggplot(data_age3, aes(y, fill = y)) + geom_bar() +
+  geom_text(stat = 'count',aes(label =..count.., vjust = -0.2)) +
+  labs(title = "Frequency of Clients Subscribing to a Term Deposit (60+)",
+       x = "Response",
+       y = "Frequency",
+       fill = "Did the client subscribe a term deposit?")
+
+#Summary of subsribe bank term by age group
+summary(data_age1$y)
+summary(data_age2$y)
+summary(data_age3$y)
+
+#number of clients said yes over the total by age group
+nrow(data_age1[which(data_age1$y=='yes'),])/nrow(data_age1)
+nrow(data_age2[which(data_age2$y=='yes'),])/nrow(data_age2)
+nrow(data_age3[which(data_age3$y=='yes'),])/nrow(data_age3)
+
+#Age Group 1 = 17.6% subscribed to term deposit
+#Age Group 2 = 9.8% subsribed to term deposit
+#Age Group 3 = 42.2% subscribed to term deposit
+  
 
 #Partitioning the dataset
 set.seed(1234)
@@ -80,19 +114,13 @@ summary(data$job)
 #unknown 34/288
 
 
-#Random FOrest Model with Default Paraamters #not working as of now
-control <- trainControl(method="repeatedcv", number=10, repeats=3)
-seed <- 7
-metric <- "Accuracy"
-set.seed(seed)
-mtry <- sqrt(ncol(train))
-tunegrid <- expand.grid(.mtry=mtry)
-
-rf_default <- train(y~., data=data, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control)
-print(rf_default)
-
 #current rf
 rf <- randomForest(y~., data=train)
+print(rf)
+plot(rf)
+
+#Measures the variable importance for each variable in predicting the y
+varImpPlot(rf)
 
 #Prediction & Confusion Matrix - train data
 library(caret)
@@ -104,21 +132,5 @@ p2 <- predict(rf, test)
 confusionMatrix(p2, test$y)
 
 
-varImpPlot(rf)
 
-
-
-##### trial #not working
-t <- tuneRF(train[,-17], train[,17],
-            stepFactor = 0.5,
-            plot = TRUE,
-            ntreeTry = 300,
-            trace = TRUE,
-            improve = 0.05)
-
-rf <- randomForest(y~., data = train,
-                   ntree = 200,
-                   mtry = 4,
-                   importance = TRUE,
-                   proximity = TRUE)
 
