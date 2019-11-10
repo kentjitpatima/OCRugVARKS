@@ -1,0 +1,159 @@
+---
+title: Math Geeks + Ryan 
+output: 
+  ioslides_presentation:
+    widescreen: true
+    smaller: true
+  center: true
+---
+
+## Bargraph of Age vs Y
+```{r echo=FALSE, out.width = "90%"}
+setwd("~/Documents/GitHub/OCRugVARKS/data")
+data <- read.csv("bank-full.csv", TRUE, ';')
+colory <- "#56a8e8"
+colorn <- "grey75"  
+
+library(ggplot2)
+ggplot(data, aes(age, fill = y)) + geom_bar() +
+  theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Age",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+``` 
+ 
+```{r echo = FALSE, out.width = "90%"}
+## Bargraph of percentages of Age vs Y
+suppressWarnings(print(ggplot(data, aes(age, fill = y)) + geom_bar(position = "fill") +
+  theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Age",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  xlim(18,95) +
+  guides(fill = guide_legend(reverse = TRUE))))
+```
+
+
+
+## Bargraph of Jobs vs Y
+```{r}
+ggplot(data, aes(job, fill = y)) + coord_flip()  + geom_bar() +
+   theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Jobs",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+```
+
+## Bargraph of Martial status vs Y
+```{r}
+ggplot(data,aes(marital, fill = y)) + geom_bar() +
+  geom_text(stat = 'count', aes(label = ..count.., vjust = -0.2)) +
+  theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Maritial Status",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+#no significance
+```
+
+## Bargraph of education vs Y
+```{r}
+ggplot(data,aes(education, fill = y)) + geom_bar() + 
+  theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Education Level",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+summary(data$education)
+```
+
+## Bargraph of default vs Y
+```{r}
+ggplot(data,aes(default, fill = y)) + geom_bar(position = "fill") +
+  theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "If Defaulted Bank Loans",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+```
+### Those who defaulted should not be called. This is a waste of money
+
+## bargraph of housing vs Y
+```{r}
+ggplot(data, aes(housing, fill = y)) + geom_bar() +
+    theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "If House Loans were Taken",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+```
+
+## bargraph of loan vs Y
+```{r}
+ggplot(data, aes(loan, fill = y)) + geom_bar(position = "fill") +
+    theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "If Any Loans Taken",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+```
+## no significance
+
+## bargraph of contact vs Y
+```{r}
+ggplot(data, aes(contact, fill = y)) + geom_bar(position = "fill") +
+    theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Types of Contacts",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+summary(data$contact)
+```
+
+## bargraph of campaign vs Y
+```{r}
+ggplot(data, aes(campaign, fill = y)) +geom_bar() +
+    theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Number of Calls for a Person",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE)) + 
+  xlim(0,15)
+```
+#if the person doesn't say yes within the first three times, then the bank is wasting money and effort on calling again
+
+## bargraph of number of days since previously contacted vs Y
+```{r}
+ggplot(data,aes(pdays, fill = y)) + geom_bar() + xlim(0,300) +
+    theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Number of Days Inbetween Consecutive Calls",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE))
+```
+
+## bargraph of number of contacts in a prior campaign vs Y
+```{r}
+ggplot(data,aes(previous, fill = y)) + geom_bar(position = "dodge") + 
+    theme_minimal() + scale_fill_manual(values = c(colorn,colory)) +
+  labs(title = NULL, 
+  x = "Number of Calls in Prior Campaigns",
+  y = "Number of Persons Called",
+  fill = "Subscribed?") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  xlim(-1,10)
+```
+
