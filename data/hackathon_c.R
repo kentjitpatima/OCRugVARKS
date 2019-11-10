@@ -7,6 +7,8 @@ library(randomForest)
 library(caret)
 library(ggplot2)
 
+#Visualize the Data
+#ggplot(data, aes(marital, y, size = balance, color = job)) + ?geom_point() + ?geom_smooth() + ?facet_gridt(drv ~ fl) + ?theme_minimal() + labs(title = "Title", subtitle = "subtitle" , x ="x axix" , y = "y axis")
 
 #Remove unncessary columns
 data <- subset(data, select =-c(duration))
@@ -47,6 +49,12 @@ confusionMatrix(p1, train$y)
 p2 <- predict(rf, test)
 confusionMatrix(p2, test$y)
 
+
+
+
+
+
+
 t <- tuneRF(train[,-17], train[,17],
             stepFactor = 0.5,
             plot = TRUE,
@@ -59,3 +67,8 @@ rf <- randomForest(y~., data = train,
                    mtry = 4,
                    importance = TRUE,
                    proximity = TRUE)
+
+
+#Variable Importance to see which variables play an important part in the model
+varImpPlot(rf)
+partialPlot(rf, train, job, "yes")
