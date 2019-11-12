@@ -7,6 +7,8 @@ library(randomForest)
 library(caret)
 library(ggplot2)
 library(dplyr)
+library(lubridate)
+library(scales)
 
 #Visualize the Data
 
@@ -108,6 +110,8 @@ nrow(data_age3[which(data_age3$y=='yes'),])/nrow(data_age3)
 data_yes <- data[ which(data$y=='yes'),]
 data_no <- data[ which(data$y=='no'),]
 
+summary(data_yes$duration)
+summary(data_no$duration)
 
 set.seed(1234)
 ind <- sample(2,nrow(data_no), replace = TRUE, prob = c(0.7,0.3))
@@ -159,3 +163,46 @@ confusionMatrix(p1, train$y)
 #Prediction & Confusion MAtrix - test data
 p2 <- predict(rf, test)
 confusionMatrix(p2, test$y)
+
+data$month_num[data$month == 'jan'] = 1 
+data$month_num[data$month == 'feb'] = 2 
+data$month_num[data$month == 'mar'] = 3 
+data$month_num[data$month == 'apr'] = 4 
+data$month_num[data$month == 'may'] = 5 
+data$month_num[data$month == 'jun'] = 6 
+data$month_num[data$month == 'jul'] = 7 
+data$month_num[data$month == 'aug'] = 8 
+data$month_num[data$month == 'sep'] = 9 
+data$month_num[data$month == 'oct'] = 10 
+data$month_num[data$month == 'nov'] = 11
+data$month_num[data$month == 'dec'] = 12 
+
+data$x <- paste(data$month_num,data$day, "2008")
+data$x <- mdy(data$x)
+
+data$x <- as.POSIXct(data$x)
+
+ggplot(data, aes(x, y)) + geom_line() + xlab("Frequnecy of Call") + ylab("Daily Views")
+
+
+ggplot(data, aes(x, fill = y)) + 
+  geom_histogram(binwidth = 5,colour = "white", size = 0.1) + 
+  theme_minimal() +
+  scale_fill_manual(values = c(colorn,colory)) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  xlab("Month") + 
+  ylab("Number of Calls")
+
+
+ggplot(data, aes(x, fill = y)) + 
+  geom_histogram(binwidth = 1,colour = "white", size = 0.1) + 
+  theme_minimal() +
+  scale_fill_manual(values = c(colorn,colory)) +
+  scale_x_date(date_labels = "%B", date_breaks  ="1 month",limits = as.Date(c('2008-01-01','2008-12-14')))+
+  guides(fill = guide_legend(reverse = TRUE)) +
+  xlab(NULL) + 
+  ylab("Number of Observations")
+
+
+#####
+
