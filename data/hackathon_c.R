@@ -211,7 +211,15 @@ data$month_num[data$month == 'dec'] = 12
 data$x <- paste(data$month_num,data$day, "2008")
 data$x <- mdy(data$x)
 
-data$x <- as.POSIXct(data$x)
+
+#######
+
+data2008 <- data[1:27729,]
+data2009 <- data[27730:42952,]
+data2010 <- data[42953:45211,]
+
+######
+
 
 ggplot(data, aes(x, y)) + geom_line() + xlab("Frequnecy of Call") + ylab("Daily Views")
 
