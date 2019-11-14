@@ -23,4 +23,4 @@ ___
 * Although synthesizing data for our classification model leads to no information loss, we increased the risk of overfitting the model since it replicates the minority class events
 
 **Acknowledgments**
-<br> Shout out to John Peach, Ryan Benz, and Emil Hvitfeldt Hansen for helping us get through our first hackathon and guiding us in the direction on how to approach the dataset. 
+<br> Shout out to John Peach, Ryan Benz, and Emil Hvitfeldt Hansen of OCRUG for helping us get through our first hackathon and guiding us in the direction on how to approach the dataset. 
