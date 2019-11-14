@@ -3,7 +3,7 @@
 
 Attached you will find the provided data set and R code used to run the predictive model. If you have any questions or find areas for improvements, feel free to reach out. 
 ___
-**Team Ryan + Math Geeks:**
+**Team Math Geeks + Ryan:**
 
 Ryan Luu <br>
 Kent Jitpatima <br>
