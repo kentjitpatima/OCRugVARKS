@@ -19,7 +19,7 @@ ___
 
 **Limitations of our Analyses**
 * The predictive model we built in determining whether a client will subscribe to a bank term deposit may not be accurate in 2019 because Portugal's 2019 economy heavily differs than that of its 2008-2010 economy, which was during and near the Great Recession.
-* Due to an imbalance of classifiers, we used synthetic data to better train the random forest model. Our original model without synthetic data had a 91% overall accuracy but more than 50% false positive rate. Our improved model sported a 87% overall accuracy but had a 20% false positive rate. Despite the lower overall accuracy, our new model showed to be more well-rounded in class error. Overall accuracy is sometimes not the best indicator of a model's performance. 
+* Due to an imbalance of classifiers, we used synthetic data to better train the random forest model. Our original model without synthetic data had a 91% overall accuracy but more than 50% false negative rate. Our improved model sported a 87% overall accuracy but had a 20% false negative rate. Despite the lower overall accuracy, our new model showed to be more well-rounded in class error. Overall accuracy is sometimes not the best indicator of a model's performance. 
 * Although synthesizing data for our classification model leads to no information loss, we increased the risk of overfitting the model since it replicates the minority class events
 
 **Acknowledgments**
